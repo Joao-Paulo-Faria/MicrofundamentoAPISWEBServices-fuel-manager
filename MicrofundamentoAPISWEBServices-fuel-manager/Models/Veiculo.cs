@@ -42,3 +42,5 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Models
 //Essa classe de contexto administra os objetos entidades durante o tempo de execução, o que inclui preencher objetos com dados de um banco de dados, controlar alterações, e persistir dados para o banco de dados.
 //ORM da microsoft - O Entity Framework é a tecnologia de modelagem ORM (mapeamento relacional de objeto) recomendada para novos aplicativos . NET. As Ferramentas do Entity Framework foram projetadas para ajudar você a criar aplicativos EF (Entity Framework)
 //O que é e para que serve um ORM? Object-Relational Mapping (ORM), em português, mapeamento objeto-relacional, é uma técnica para aproximar o paradigma de desenvolvimento de aplicações orientadas a objetos ao paradigma do banco de dados relacional.
+//Entiframework para fazer a impedancia de dados tradução de modelo orientado a objeto para modelo de banco de dados
+//
