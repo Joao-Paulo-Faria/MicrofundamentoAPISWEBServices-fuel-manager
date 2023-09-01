@@ -46,3 +46,6 @@ app.MapControllers();
 app.Run();
 
 //starta as configurações do projeto.
+
+//os endpoints ficam no controllers e os controles onde ficam as classes responsabeis por fazer as requisições,
+//http da nossa web api
