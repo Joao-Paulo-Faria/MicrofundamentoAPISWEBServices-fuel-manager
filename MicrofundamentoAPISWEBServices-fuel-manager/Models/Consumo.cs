@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MicrofundamentoAPISWEBServices_fuel_manager.Models
 {
     [Table("Consumos")] //é para gerar o nome da tabela da forma que eu quero.
-    public class Consumo
+    public class Consumo : LinksHATEOS
     {
         //abaixo vamos colocar as propriedades que vamos utilizar na classe consumo.
         [Key] //configurar as propriedades para conexao com banco de dados.

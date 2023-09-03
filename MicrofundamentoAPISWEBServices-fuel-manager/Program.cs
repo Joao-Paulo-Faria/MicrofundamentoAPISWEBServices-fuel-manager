@@ -1,12 +1,15 @@
 using MicrofundamentoAPISWEBServices_fuel_manager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddJsonOptions(X => X.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 //as configurações de banco de dados é um serviço que ele vai adicionar via injeção de dependencia
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MicrofundamentoAPISWEBServices_fuel_manager.Models
 {
     [Table("Veiculos")] //nome da tabela que quero ter. Essa tabela ao ser criada no banco de dados quero o nome veiculos
-    public class Veiculo
+    public class Veiculo : LinksHATEOS
     {
         //São as propriedades do veículo
         //chave primária autoincremento
