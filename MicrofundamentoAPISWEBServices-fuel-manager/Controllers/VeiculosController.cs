@@ -52,12 +52,43 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
         {
             var model = await _context.Veiculos.FirstOrDefaultAsync(c => c.Id == id);
 
-            if(model == null) NotFound();
+            if(model == null) return NotFound();
 
             return Ok(model);
         }
+
         // FirstOrDefaultAsync --->Retorna de forma assíncrona o primeiro elemento de uma sequência que satisfaz uma condição especificada ou um valor padrão se nenhum elemento desse tipo for encontrado.
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, Veiculo model)
+        {
+            if (id != model.Id) return BadRequest();
+            //estou validando se a url na rota é a mesa no veiculo.
+            var modeloDB = await _context.Veiculos.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id) ;
+            if (modeloDB == null) return NotFound();
+            //asnotracking - quer apenas consultar sem alterar...(spenas visualizar)
+           
+
+            _context.Veiculos.Update(model); // atualiza no banco de dados
+            await _context.SaveChangesAsync(); //salva no banco de dados
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+
+            var model = await _context.Veiculos.FindAsync(id);
+
+            if (model == null) return NotFound();
+
+            _context.Veiculos.Remove(model);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
+
 }
 
 
