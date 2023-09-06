@@ -12,9 +12,27 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Models
 
 
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+            // esse metodo onmodelcrating quando ele vai criar o modelo eu posso de forma programatica (builder
+            // configurar as suas relações....
+        {
+            builder.Entity<VeiculoUsuarios>().HasKey(x => new {x.VeiculoId, x.UsuarioId} );
+            //acima criei uma chave composta...
+
+            builder. Entity<VeiculoUsuarios>().HasOne(c=>c.Veiculo).WithMany(c=>c.Usuarios)
+                .HasForeignKey(c=>c.VeiculoId);
+
+            builder.Entity<VeiculoUsuarios>().HasOne(c => c.Usuario).WithMany(c => c.Veiculos)
+               .HasForeignKey(c => c.UsuarioId);
+        }
+
         public DbSet<Veiculo> Veiculos { get; set; }
 
         public DbSet<Consumo> Consumos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<VeiculoUsuarios> VeiculoUsuarios { get; set; }
+
+
 
 
     }

@@ -25,6 +25,8 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Models
         [Required]
         public int AnoModelo { get; set; }
         public ICollection<Consumo> Consumos { get; set; }
+        //meu veiculo pode está associado a varios usuarios do meu sistema...
+        public ICollection<VeiculoUsuarios> Usuarios { get; set; }
     }
 }
 
