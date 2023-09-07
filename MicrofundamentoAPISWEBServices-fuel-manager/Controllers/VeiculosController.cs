@@ -1,4 +1,5 @@
 ﻿using MicrofundamentoAPISWEBServices_fuel_manager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VeiculosController : ControllerBase
@@ -19,6 +21,7 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
 
         //vamos criar agora a rota de index que é para exibir todos os carros cadastrados.
         //vamos criar uma função:
+        [Authorize(Roles ="Usuario")]
         [HttpGet]
         public async Task<ActionResult> CetAll() 
         {
@@ -32,6 +35,7 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
             //entre as linhas 22 e 31 existe uma rota configurada.  
             //O método ToList tem como objetivo materializar uma lista de elementos em memória. Na prática, ele retorna uma nova instância de List<TSource> a partir de um IEnumerable<TSource>.
         }
+        [Authorize(Roles = "Administrador, Usuario")]
         //Agora vou criar um novo veículo através da minha api
         [HttpPost]//vou utilizar o método post, fazer criação de novo item
         public async Task<ActionResult> Create(Veiculo model)
@@ -47,6 +51,7 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
             return CreatedAtAction("GetById", new {id=model.Id}, model);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(int id)
         {

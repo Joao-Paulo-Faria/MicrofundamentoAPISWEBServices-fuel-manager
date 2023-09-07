@@ -1,11 +1,18 @@
 ﻿using BCrypt.Net;
 using MicrofundamentoAPISWEBServices_fuel_manager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
 {
+
+    [Authorize(Roles = "Administrador")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
@@ -92,6 +99,41 @@ namespace MicrofundamentoAPISWEBServices_fuel_manager.Controllers
             return NoContent();
         }
 
- 
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<ActionResult> Authenticate(AuthenticateDto model)
+        {
+
+            var usuarioDB = await _context.Usuarios.FindAsync(model.Id);
+
+            if(usuarioDB == null || !BCrypt.Net.BCrypt.Verify(model.PassWord, usuarioDB.Password))
+                return Unauthorized();
+
+            var jwt = GenerateJwtToken(usuarioDB);
+
+            return Ok(new {jwtToken = jwt });
+        }
+
+        private string GenerateJwtToken(Usuario model)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("bHtnQYUp6GtK81Qh1FR37R0mMNVYnF6y");
+            var claims = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, model.Id.ToString()),
+                new Claim(ClaimTypes.Role, model.Perfil.ToString()),
+            });
+            var tokenDescripter = new SecurityTokenDescriptor
+            {
+                Subject = claims,
+                Expires = DateTime.UtcNow.AddHours(8),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescripter);
+            return tokenHandler.WriteToken(token);
+        }
+
+
     }
 }
